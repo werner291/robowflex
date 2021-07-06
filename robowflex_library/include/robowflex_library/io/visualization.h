@@ -3,13 +3,14 @@
 #ifndef ROBOWFLEX_IO_VISUALIZATION_
 #define ROBOWFLEX_IO_VISUALIZATION_
 
+#include <pcl_ros/point_cloud.h>
+#include <pcl_conversions/pcl_conversions.h>
+
 #include <moveit/planning_interface/planning_interface.h>
 
 #include <robowflex_library/class_forward.h>
 #include <robowflex_library/io/colormap.h>
 #include <robowflex_library/tf.h>
-#include <pcl_ros/point_cloud.h>
-#include <pcl_conversions/pcl_conversions.h>
 
 namespace robowflex
 {

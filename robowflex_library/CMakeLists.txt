@@ -47,6 +47,7 @@ list(APPEND CATKIN_SOURCES
   tf2_ros
   xmlrpcpp
   pcl_ros 
+  pcl_conversions # Used for interfaces extension
   )
 
 find_package(catkin REQUIRED COMPONENTS ${CATKIN_SOURCES})
