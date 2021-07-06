@@ -113,7 +113,7 @@ namespace robowflex
             /** \brief Updates the pointcloud being visualized.
              *  \param[in] pcd Pointcloud to visualize.
              */
-            void updatePointCloud(const std::shared<pcl::PointCloud<pcl::PointXYZ>> &pcd);
+            void updatePointCloud(const std::shared_ptr<pcl::PointCloud<pcl::PointXYZ>> &pcd);
 
             /** \} */
 

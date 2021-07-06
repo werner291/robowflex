@@ -46,6 +46,7 @@ list(APPEND CATKIN_SOURCES
   moveit_ros_planning
   tf2_ros
   xmlrpcpp
+  pcl_ros 
   )
 
 find_package(catkin REQUIRED COMPONENTS ${CATKIN_SOURCES})

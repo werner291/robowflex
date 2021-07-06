@@ -5,6 +5,7 @@
 #include <moveit_msgs/DisplayRobotState.h>
 #include <moveit_msgs/DisplayTrajectory.h>
 #include <moveit_msgs/PlanningScene.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 
@@ -49,6 +50,7 @@ IO::RVIZHelper::RVIZHelper(const RobotConstPtr &robot, const std::string &name)
     trajectory_pub_ = nh_.advertise<moveit_msgs::DisplayTrajectory>("trajectory", 1);
     state_pub_ = nh_.advertise<moveit_msgs::DisplayRobotState>("state", 1);
     scene_pub_ = nh_.advertise<moveit_msgs::PlanningScene>("scene", 1);
+    pcd_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("pcd", 1);
     marker_pub_ = nh_.advertise<visualization_msgs::MarkerArray>("/visualization_marker_array", 100);
 }
 
@@ -428,7 +430,7 @@ void IO::RVIZHelper::updateScene(const SceneConstPtr &scene)
     scene_pub_.publish(to_pub);
 }
 
-void IO::RVIZHelper::updatePointCloud(const std::shared<pcl::PointCloud<pcl::PointXYZ>> &pcd)
+void IO::RVIZHelper::updatePointCloud(const std::shared_ptr<pcl::PointCloud<pcl::PointXYZ>> &pcd)
 {
     if (pcd_pub_.getNumSubscribers() < 1)
     {
@@ -440,13 +442,10 @@ void IO::RVIZHelper::updatePointCloud(const std::shared<pcl::PointCloud<pcl::Poi
     }
 
     sensor_msgs::PointCloud2 to_pub;
-    if (scene != nullptr)
-    {
-        to_pub = pcl::toROSMsg(*pcd);
-        to_pub.is_diff = true;
-    }
+    if (pcd != nullptr)
+        pcl::toROSMsg(*pcd, to_pub);
 
-    scene_pub_.publish(to_pub);
+    pcd_pub_.publish(to_pub);
 }
 
 void IO::RVIZHelper::updateMarkers()
