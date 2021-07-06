@@ -428,6 +428,27 @@ void IO::RVIZHelper::updateScene(const SceneConstPtr &scene)
     scene_pub_.publish(to_pub);
 }
 
+void IO::RVIZHelper::updatePointCloud(const std::shared<pcl::PointCloud<pcl::PointXYZ>> &pcd)
+{
+    if (pcd_pub_.getNumSubscribers() < 1)
+    {
+        RBX_INFO("Waiting for PointCloud subscribers...");
+
+        ros::WallDuration pause(0.1);
+        while (pcd_pub_.getNumSubscribers() < 1)
+            pause.sleep();
+    }
+
+    sensor_msgs::PointCloud2 to_pub;
+    if (scene != nullptr)
+    {
+        to_pub = pcl::toROSMsg(*pcd);
+        to_pub.is_diff = true;
+    }
+
+    scene_pub_.publish(to_pub);
+}
+
 void IO::RVIZHelper::updateMarkers()
 {
     visualization_msgs::MarkerArray msg;
