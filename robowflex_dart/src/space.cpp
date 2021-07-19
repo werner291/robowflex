@@ -72,8 +72,14 @@ void StateSpace::addGroup(const std::string &name, const std::string &group, std
     }
 
     auto joints = robot->getGroupJoints(group);
+    addGroupFromJoints(name, group, joints, cyclic);
+}
 
-    groups_.emplace_back(name, group, cyclic);
+void StateSpace::addGroupFromJoints(const std::string &name, const std::string &group_name,
+                                    const std::vector<dart::dynamics::Joint *> &joints, std::size_t cyclic)
+{
+    groups_.emplace_back(name, group_name, cyclic);
+
     for (auto *joint : joints)
     {
         if (jointset_.find(joint) != jointset_.end())

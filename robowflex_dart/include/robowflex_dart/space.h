@@ -96,6 +96,15 @@ namespace robowflex
              */
             void addGroup(const std::string &name, const std::string &group, std::size_t cyclic = 0);
 
+            /** \brief Add a group to be planned for.
+             *  \param[in] name Name of the robot that has the group.
+             *  \param[in] group Group to plan for.
+             *  \param[in] cyclic If >0, will flatten rotational groups (i.e., SO(2), SO(3)) into Rn spaces.
+             */
+            void addGroupFromJoints(const std::string &name, const std::string &group_name,
+                                    const std::vector<dart::dynamics::Joint *> &joints,
+                                    std::size_t cyclic = 0);
+
             /** \} */
 
             /** \name World State
