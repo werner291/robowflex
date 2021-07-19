@@ -80,11 +80,15 @@ void StateSpace::addGroupFromJoints(const std::string &name, const std::string &
 {
     groups_.emplace_back(name, group_name, cyclic);
 
+    group_joints_.emplace(group_name, std::vector<JointPtr>{});
+    group_dimension_.emplace(group_name, 0);
+
     for (auto *joint : joints)
     {
         if (jointset_.find(joint) != jointset_.end())
         {
             RBX_INFO("Joint %1% already being planned, skipping...", joint->getName());
+            addJointToGroup(group_name, getJoint(joint->getName()));
             continue;
         }
 
@@ -101,19 +105,16 @@ void StateSpace::addGroupFromJoints(const std::string &name, const std::string &
                 {
                     double low = -constants::pi * cyclic;
                     double high = constants::pi * cyclic;
-                    joints_.emplace_back(std::make_shared<RnJoint>(this, revolute, low, high));
+                    addJoint(group_name, std::make_shared<RnJoint>(this, revolute, low, high));
                 }
                 else
-                {
-                    joints_.emplace_back(std::make_shared<SO2Joint>(this, revolute));
-                    metric_ = false;
-                }
+                    addJoint(group_name, std::make_shared<SO2Joint>(this, revolute));
             }
             else
             {
                 auto *dof = joint->getDof(0);
                 auto limits = dof->getPositionLimits();
-                joints_.emplace_back(std::make_shared<RnJoint>(this, revolute, limits.first, limits.second));
+                addJoint(group_name, std::make_shared<RnJoint>(this, revolute, limits.first, limits.second));
             }
         }
         else if (type == "PrismaticJoint")
@@ -121,7 +122,7 @@ void StateSpace::addGroupFromJoints(const std::string &name, const std::string &
             auto *prismatic = static_cast<dart::dynamics::PrismaticJoint *>(joint);
             auto *dof = joint->getDof(0);
             auto limits = dof->getPositionLimits();
-            joints_.emplace_back(std::make_shared<RnJoint>(this, prismatic, limits.first, limits.second));
+            addJoint(group_name, std::make_shared<RnJoint>(this, prismatic, limits.first, limits.second));
         }
         else if (type == "FreeJoint")
         {
@@ -145,7 +146,7 @@ void StateSpace::addGroupFromJoints(const std::string &name, const std::string &
                         std::min({free->getPositionUpperLimit(3 + i), world_->getWorkspaceHighConst()[i]});
                 }
 
-                joints_.emplace_back(std::make_shared<RnJoint>(this, free, 6, 0, low, high));
+                addJoint(group_name, std::make_shared<RnJoint>(this, free, 6, 0, low, high));
             }
             else
             {
@@ -160,10 +161,8 @@ void StateSpace::addGroupFromJoints(const std::string &name, const std::string &
                         std::min({free->getPositionUpperLimit(3 + i), world_->getWorkspaceHighConst()[i]});
                 }
 
-                joints_.emplace_back(std::make_shared<RnJoint>(this, free, 3, 3, low, high));
-                joints_.emplace_back(std::make_shared<SO3Joint>(this, free));
-
-                metric_ = false;
+                addJoint(group_name, std::make_shared<RnJoint>(this, free, 3, 3, low, high));
+                addJoint(group_name, std::make_shared<SO3Joint>(this, free));
             }
         }
         else
@@ -172,6 +171,21 @@ void StateSpace::addGroupFromJoints(const std::string &name, const std::string &
 
     registerDefaultProjection(
         std::make_shared<ompl::base::RealVectorRandomLinearProjectionEvaluator>(this, 2));
+}
+
+void StateSpace::addJoint(const std::string &group_name, const JointPtr &joint)
+{
+    joints_.emplace_back(joint);
+    addJointToGroup(group_name, joint);
+
+    if (not std::dynamic_pointer_cast<RnJoint>(joint))
+        metric_ = false;
+}
+
+void StateSpace::addJointToGroup(const std::string &group_name, const JointPtr &joint)
+{
+    group_joints_[group_name].emplace_back(joint);
+    group_dimension_[group_name] += joint->getDimension();
 }
 
 void StateSpace::setWorldState(WorldPtr world, const ompl::base::State *state)
@@ -334,6 +348,41 @@ JointPtr StateSpace::getJoint(const std::string &name) const
 const std::vector<JointPtr> &StateSpace::getJoints() const
 {
     return joints_;
+}
+
+void StateSpace::getGroupState(const std::string &group, const ompl::base::State *state,
+                               Eigen::Ref<Eigen::VectorXd> v) const
+{
+    const auto &joints = group_joints_.find(group)->second;
+    const auto &as = state->as<StateType>();
+
+    std::size_t index = 0;
+    for (const auto &joint : joints)
+    {
+        std::size_t n = joint->getDimension();
+        v.segment(index, n) = joint->getSpaceVarsConst(as->data);
+        index += n;
+    }
+}
+
+void StateSpace::setGroupState(const std::string &group, ompl::base::State *state,
+                               const Eigen::Ref<const Eigen::VectorXd> &v) const
+{
+    const auto &joints = group_joints_.find(group)->second;
+    auto *as = state->as<StateType>();
+
+    std::size_t index = 0;
+    for (const auto &joint : joints)
+    {
+        std::size_t n = joint->getDimension();
+        joint->getSpaceVars(as->data) = v.segment(index, n);
+        index += n;
+    }
+}
+
+std::size_t StateSpace::getGroupDimension(const std::string &group) const
+{
+    return group_dimension_.find(group)->second;
 }
 
 Eigen::VectorXd StateSpace::getLowerBound() const

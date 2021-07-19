@@ -180,6 +180,27 @@ namespace robowflex
              */
             const std::vector<JointPtr> &getJoints() const;
 
+            /** \brief From a full state, get only the state of a group.
+             *  \param[in] group The group to get the state for.
+             *  \param[in] state The state to get the group state from.
+             *  \param[out] v The group state to set.
+             */
+            void getGroupState(const std::string &group, const ompl::base::State *state,
+                               Eigen::Ref<Eigen::VectorXd> v) const;
+
+            /** \brief Set a (sub)group state in a full state.
+             *  \param[in] group The group to set the state for.
+             *  \param[out] state The state to set the group state in.
+             *  \param[in] v The group state to use.
+             */
+            void setGroupState(const std::string &group, ompl::base::State *state,
+                               const Eigen::Ref<const Eigen::VectorXd> &v) const;
+
+            /** \brief Get the dimension of joint variables for a subgroup.
+             *  \return The group's dimension.
+             */
+            std::size_t getGroupDimension(const std::string &group) const;
+
             /** \} */
 
             /** \name OMPL StateSpace Methods
@@ -202,6 +223,9 @@ namespace robowflex
             void setMetricSpace(bool metric);
 
         protected:
+            void addJoint(const std::string &group_name, const JointPtr &joint);
+            void addJointToGroup(const std::string &group_name, const JointPtr &joint);
+
             WorldPtr world_;  ///< World to use for planning.
 
             /** \brief Set of groups used in planning. Tuple of robot name, group, and cyclic count.
@@ -216,6 +240,9 @@ namespace robowflex
             std::vector<JointPtr> joints_;  ///< Vector of all joints used in planning.
 
             ompl::RNG rng_;  ///< Random number generator.
+
+            std::map<std::string, std::vector<JointPtr>> group_joints_;  ///< Joints belonging to a group.
+            std::map<std::string, std::size_t> group_dimension_;         ///< Dimension of the group.
         };
     }  // namespace darts
 }  // namespace robowflex
