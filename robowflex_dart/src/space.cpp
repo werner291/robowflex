@@ -188,13 +188,13 @@ void StateSpace::addJointToGroup(const std::string &group_name, const JointPtr &
     group_dimension_[group_name] += joint->getDimension();
 }
 
-void StateSpace::setWorldState(WorldPtr world, const ompl::base::State *state)
+void StateSpace::setWorldState(WorldPtr world, const ompl::base::State *state) const
 {
     const auto &as = state->as<StateType>();
     setWorldState(std::move(world), as->data);
 }
 
-void StateSpace::setWorldState(WorldPtr world, const Eigen::Ref<const Eigen::VectorXd> &x)
+void StateSpace::setWorldState(WorldPtr world, const Eigen::Ref<const Eigen::VectorXd> &x) const
 {
     for (const auto &joint : joints_)
     {
@@ -217,6 +217,36 @@ void StateSpace::getWorldState(WorldPtr world, Eigen::Ref<Eigen::VectorXd> x) co
     {
         const auto &v = joint->getSpaceVars(x);
         joint->getJointState(world, v);
+    }
+}
+
+void StateSpace::setWorldGroupState(WorldPtr world, const std::string &group_name,
+                                    const Eigen::Ref<const Eigen::VectorXd> &x) const
+{
+    const auto &joints = group_joints_.find(group_name)->second;
+
+    std::size_t index = 0;
+    for (const auto &joint : joints)
+    {
+        std::size_t n = joint->getDimension();
+        joint->setJointState(world, x.segment(index, n));
+        index += n;
+    }
+
+    world->forceUpdate();
+}
+
+void StateSpace::getWorldGroupState(WorldPtr world, const std::string &group_name,
+                                    Eigen::Ref<Eigen::VectorXd> x) const
+{
+    const auto &joints = group_joints_.find(group_name)->second;
+
+    std::size_t index = 0;
+    for (const auto &joint : joints)
+    {
+        std::size_t n = joint->getDimension();
+        joint->getJointState(world, x.segment(index, n));
+        index += n;
     }
 }
 
@@ -383,6 +413,15 @@ void StateSpace::setGroupState(const std::string &group, ompl::base::State *stat
 std::size_t StateSpace::getGroupDimension(const std::string &group) const
 {
     return group_dimension_.find(group)->second;
+}
+
+std::vector<std::string> StateSpace::getGroups() const
+{
+    std::vector<std::string> groups;
+    for (const auto &pair : group_joints_)
+        groups.emplace_back(pair.first);
+
+    return groups;
 }
 
 Eigen::VectorXd StateSpace::getLowerBound() const

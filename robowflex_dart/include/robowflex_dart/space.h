@@ -114,13 +114,13 @@ namespace robowflex
              *  \param[out] world World to set state of.
              *  \param[in] state State to set world.
              */
-            void setWorldState(WorldPtr world, const ompl::base::State *state);
+            void setWorldState(WorldPtr world, const ompl::base::State *state) const;
 
             /** \brief Set the state of a world from a configuration
              *  \param[out] world World to set state of.
              *  \param[in] x Configuration to set world.
              */
-            void setWorldState(WorldPtr world, const Eigen::Ref<const Eigen::VectorXd> &x);
+            void setWorldState(WorldPtr world, const Eigen::Ref<const Eigen::VectorXd> &x) const;
 
             /** \brief Get the state of a world in an OMPL state.
              *  \param[in] world World to get state of.
@@ -133,6 +133,22 @@ namespace robowflex
              *  \param[out] x Configuration to fill.
              */
             void getWorldState(WorldPtr world, Eigen::Ref<Eigen::VectorXd> x) const;
+
+            /** \brief Set the state of a world from a configuration of a group.
+             *  \param[out] world World to set state of.
+             *  \param[in] group_name Name of group to set.
+             *  \param[in] x Configuration to set.
+             */
+            void setWorldGroupState(WorldPtr world, const std::string &group_name,
+                                    const Eigen::Ref<const Eigen::VectorXd> &x) const;
+
+            /** \brief Get the group state of a world.
+             *  \param[in] world World to get state of.
+             *  \param[in] group_name Name of group to get.
+             *  \param[out] x Configuration to get.
+             */
+            void getWorldGroupState(WorldPtr world, const std::string &group_name,
+                                    Eigen::Ref<Eigen::VectorXd> x) const;
 
             /** \} */
 
@@ -200,6 +216,11 @@ namespace robowflex
              *  \return The group's dimension.
              */
             std::size_t getGroupDimension(const std::string &group) const;
+
+            /** \brief Get the names of all groups managed by this space.
+             *  \return Names of all the groups.
+             */
+            std::vector<std::string> getGroups() const;
 
             /** \} */
 
