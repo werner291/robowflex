@@ -420,6 +420,11 @@ namespace robowflex
              */
             void setWorld(const WorldPtr &world);
 
+            /** \brief Get the world used by this TSR.
+             *  \return The world used by the TSR.
+             */
+            WorldPtr getWorld();
+
             /** \brief Clears the initialization of this TSR.
              */
             void clear();

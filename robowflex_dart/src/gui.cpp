@@ -502,10 +502,13 @@ void TSREditWidget::syncFrame()
 
 void TSREditWidget::syncTSR()
 {
+    auto world = tsr_->getWorld();
+    world->lock();
     tsr_->getSpecification() = spec_;
     tsr_->updatePose();
     tsr_->updateBounds();
     tsr_->updateSolver();
+    world->unlock();
 }
 
 void TSREditWidget::syncSpec()

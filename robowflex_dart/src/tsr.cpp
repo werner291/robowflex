@@ -489,6 +489,11 @@ void TSR::setWorld(const WorldPtr &world)
     initialize();
 }
 
+WorldPtr TSR::getWorld()
+{
+    return world_;
+}
+
 void TSR::useGroup(const std::string &name)
 {
     auto robot = world_->getRobot(spec_.target.structure);

@@ -24,9 +24,9 @@ int main(int argc, char **argv)
     {
         auto world = std::make_shared<darts::World>();
 
-        auto fetch1 = darts::loadMoveItRobot("fetch1",                                         //
-                                             "package://fetch_description/robots/fetch.urdf",  //
-                                             "package://fetch_moveit_config/config/fetch.srdf");
+        auto fetch1 = darts::loadMoveItRobot("fetch1",                                                 //
+                                             "package://robowflex_resources/fetch/robots/fetch.urdf",  //
+                                             "package://robowflex_resources/fetch/config/fetch.srdf");
         auto start = fetch1->getSkeleton()->getState();
         world->addRobot(fetch1);
 
