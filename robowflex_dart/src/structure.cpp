@@ -53,7 +53,8 @@ Structure::Structure(const std::string &name, const SceneConstPtr &scene) : Stru
         auto shape = makeGeometry(geometry);
 
         auto pair = addFreeFrame(joint, shape, root);
-        setJointParentTransform(object, pose);
+        setFreeJointTransform(object, pose);
+
         setColor(pair.second, dart::Color::Blue(0.2));
     }
 
@@ -295,6 +296,27 @@ void Structure::reparentFreeFrame(dart::dynamics::BodyNode *child, const std::st
     auto *jt = child->moveTo<dart::dynamics::FreeJoint>(skeleton_, frame, joint);
 
     setJointParentTransform(joint.mName, tf);
+}
+
+void Structure::setFreeJointTransform(const std::string &name, const RobotPose &tf)
+{
+    auto *joint = skeleton_->getJoint(name);
+    if (joint == nullptr)
+    {
+        RBX_ERROR("Cannot find joint named %s to set TF!", name);
+        return;
+    }
+
+    auto *fj = dynamic_cast<dart::dynamics::FreeJoint *>(joint);
+    if (fj == nullptr)
+    {
+        RBX_ERROR("Joint %1% is not a free joint!", name);
+        return;
+    }
+
+    Eigen::Vector6d positions = dart::dynamics::FreeJoint::convertToPositions(tf);
+    for (std::size_t i = 0; i < 6; ++i)
+        fj->getDof(i)->setPosition(positions[i]);
 }
 
 void Structure::setJointParentTransform(const std::string &name, const RobotPose &tf)

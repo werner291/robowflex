@@ -88,6 +88,11 @@ namespace robowflex
              */
             std::size_t getSkeletonIndex() const;
 
+            /** \brief Get the index of the joint in the skeleton.
+             *  \return Joint index.
+             */
+            std::size_t getJointIndex() const;
+
             /** \brief Get the dimension of this joint.
              *  \return The dimension of the joint.
              */

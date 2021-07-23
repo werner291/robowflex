@@ -97,11 +97,11 @@ namespace robowflex
             void addGroup(const std::string &name, const std::string &group, std::size_t cyclic = 0);
 
             /** \brief Add a group to be planned for.
-             *  \param[in] name Name of the robot that has the group.
-             *  \param[in] group Group to plan for.
+             *  \param[in] group_name Name of the new group.
+             *  \param[in] joints Joints to add to this group.
              *  \param[in] cyclic If >0, will flatten rotational groups (i.e., SO(2), SO(3)) into Rn spaces.
              */
-            void addGroupFromJoints(const std::string &name, const std::string &group_name,
+            void addGroupFromJoints(const std::string &group_name,
                                     const std::vector<dart::dynamics::Joint *> &joints,
                                     std::size_t cyclic = 0);
 
@@ -248,10 +248,6 @@ namespace robowflex
             void addJointToGroup(const std::string &group_name, const JointPtr &joint);
 
             WorldPtr world_;  ///< World to use for planning.
-
-            /** \brief Set of groups used in planning. Tuple of robot name, group, and cyclic count.
-             */
-            std::vector<std::tuple<std::string, std::string, std::size_t>> groups_;
 
             std::set<dart::dynamics::Joint *> jointset_;  ///< Set of joints used in planning.
             std::vector<std::size_t> indices_;            ///< Vector of indices for planning.

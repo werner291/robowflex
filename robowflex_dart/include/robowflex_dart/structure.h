@@ -167,6 +167,12 @@ namespace robowflex
              */
             void reparentFreeFrame(dart::dynamics::BodyNode *child, const std::string &parent = "");
 
+            /** \brief Sets the joint variables of a free joint to a desired transformation.
+             *  \param[in] name Name of joint to set transform of.
+             *  \param[in] tf Transform to set.
+             */
+            void setFreeJointTransform(const std::string &name, const RobotPose &tf);
+
             /** \brief Set the transform from a joint to its parent.
              *  \param[in] name Name of joint to set transform of.
              *  \param[in] tf Transform to set.

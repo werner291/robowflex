@@ -81,6 +81,11 @@ std::size_t Joint::getSkeletonIndex() const
     return skelIndex_;
 }
 
+std::size_t Joint::getJointIndex() const
+{
+    return jointIndex_;
+}
+
 std::size_t Joint::getDimension() const
 {
     return numDof_;
