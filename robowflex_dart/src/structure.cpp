@@ -300,6 +300,12 @@ void Structure::reparentFreeFrame(dart::dynamics::BodyNode *child, const std::st
 
 void Structure::setFreeJointTransform(const std::string &name, const RobotPose &tf)
 {
+    Eigen::Vector6d positions = dart::dynamics::FreeJoint::convertToPositions(tf);
+    setFreeJointTransform(name, positions);
+}
+
+void Structure::setFreeJointTransform(const std::string &name, const Eigen::Vector6d &positions)
+{
     auto *joint = skeleton_->getJoint(name);
     if (joint == nullptr)
     {
@@ -314,7 +320,6 @@ void Structure::setFreeJointTransform(const std::string &name, const RobotPose &
         return;
     }
 
-    Eigen::Vector6d positions = dart::dynamics::FreeJoint::convertToPositions(tf);
     for (std::size_t i = 0; i < 6; ++i)
         fj->getDof(i)->setPosition(positions[i]);
 }

@@ -170,6 +170,12 @@ namespace robowflex
              */
             unsigned int getSkeletonIndex(dart::dynamics::SkeletonPtr skeleton) const;
 
+            /** \brief Search this world for a body node with a given name.
+             *  \param[in] name Name of node to find.
+             *  \return The first found node.
+             */
+            dart::dynamics::BodyNode *findNode(const std::string &name) const;
+
             /** \} */
 
             /** \name Collisions

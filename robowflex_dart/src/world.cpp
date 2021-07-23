@@ -239,6 +239,19 @@ unsigned int World::getSkeletonIndex(dart::dynamics::SkeletonPtr skeleton) const
     return -1;
 }
 
+dart::dynamics::BodyNode *World::findNode(const std::string &name) const
+{
+    for (unsigned int i = 0; i < world_->getNumSkeletons(); ++i)
+    {
+        auto skel = world_->getSkeleton(i);
+        auto *node = skel->getBodyNode(name);
+        if (node)
+            return node;
+    }
+
+    return nullptr;
+}
+
 bool World::inCollision() const
 {
     dart::collision::CollisionOption option;

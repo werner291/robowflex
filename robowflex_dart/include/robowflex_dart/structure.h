@@ -173,6 +173,13 @@ namespace robowflex
              */
             void setFreeJointTransform(const std::string &name, const RobotPose &tf);
 
+            /** \brief Sets the joint variables of a free joint to a desired transformation.
+             *  \param[in] name Name of joint to set transform of.
+             *  \param[in] positions Pose to set. First 3 indices are rotation XYZ, second 3 indices are
+             *                       position.
+             */
+            void setFreeJointTransform(const std::string &name, const Eigen::Vector6d &positions);
+
             /** \brief Set the transform from a joint to its parent.
              *  \param[in] name Name of joint to set transform of.
              *  \param[in] tf Transform to set.
