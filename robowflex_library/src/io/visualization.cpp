@@ -14,7 +14,6 @@
 #include <robowflex_library/builder.h>
 #include <robowflex_library/constants.h>
 #include <robowflex_library/geometry.h>
-#include <robowflex_library/io/colormap.h>
 #include <robowflex_library/io/visualization.h>
 #include <robowflex_library/log.h>
 #include <robowflex_library/planning.h>
@@ -25,16 +24,6 @@
 #include <robowflex_library/trajectory.h>
 
 using namespace robowflex;
-
-namespace
-{
-    Eigen::Vector4d getRandomColor()
-    {
-        Eigen::Vector4d color;
-        color::turbo(RNG::uniform01(), color);
-        return color;
-    }
-};  // namespace
 
 IO::RVIZHelper::RVIZHelper(const RobotConstPtr &robot, const std::string &name)
   : robot_(robot), nh_("/" + name)
@@ -216,7 +205,7 @@ void IO::RVIZHelper::addLineMarker(const std::string &name, const std::vector<Ei
     fillMarker(marker,                 //
                "map",                  //
                RobotPose::Identity(),  //
-               getRandomColor(),       //
+               RNG::randomTurboColor(),       //
                Eigen::Vector3d{scale, 1, 1});
 
     marker.type = visualization_msgs::Marker::LINE_LIST;
@@ -312,7 +301,7 @@ void IO::RVIZHelper::addGoalMarker(const std::string &name, const MotionRequestB
     // Iterate over each goal (an "or"-ing together of different constraints)
     for (const auto &goal : goals)
     {
-        auto color = getRandomColor();  // Use the same color for all elements of this goal
+        auto color = RNG::randomTurboColor();  // Use the same color for all elements of this goal
         color[3] = 0.7;                 // Make slightly transparent
 
         for (const auto &pg : goal.position_constraints)
@@ -419,7 +408,7 @@ void IO::RVIZHelper::addMarker(double x, double y, double z, const std::string &
     const auto &pose = TF::createPoseXYZ(x, y, z);
 
     const auto &scale = Eigen::Vector3d{0.05, 0.05, 0.05};
-    const auto &color = getRandomColor();
+    const auto &color = RNG::randomTurboColor();
 
     fillMarker(marker, base_frame, pose, color, scale);
 

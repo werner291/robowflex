@@ -1,5 +1,6 @@
 /* Author: Constantinos Chamzas */
 
+#include <robowflex_library/io/colormap.h>
 #include <robowflex_library/constants.h>
 #include <robowflex_library/random.h>
 
@@ -112,4 +113,20 @@ Eigen::Vector3d RNG::gaussianVec(const Eigen::Vector3d &stddev)
     vec[2] = gaussian(stddev[2]);
 
     return vec;
+}
+
+Eigen::Vector4d RNG::randomTurboColor()
+{
+    Eigen::Vector4d color;
+    color::turbo(uniform01(), color);
+    color[3] = 1;
+    return color;
+}
+
+Eigen::Vector4d RNG::randomViridisColor()
+{
+    Eigen::Vector4d color;
+    color::viridis(uniform01(), color);
+    color[3] = 1;
+    return color;
 }

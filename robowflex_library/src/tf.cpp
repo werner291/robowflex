@@ -322,3 +322,16 @@ bool TF::isVecZero(const Eigen::Ref<const Eigen::VectorXd> &v, double tolerance)
 {
     return v.norm() < tolerance;
 }
+
+double TF::remap(double a1, double a2, double av, double b1, double b2)
+{
+    double dat = fabs(a2 - a1);
+    double dav = fabs(av - a1);
+
+    double dbt = fabs(b2 - b1);
+    double dbv = dbt * (dav / dat);
+
+    double bv = b1 + dbv;
+
+    return bv;
+}

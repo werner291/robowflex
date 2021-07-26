@@ -273,6 +273,15 @@ namespace robowflex
          */
         bool isVecZero(const Eigen::Ref<const Eigen::VectorXd> &v, double tolerance = constants::eps);
 
+        /** \brief Remap a value \a av in a range [\a a1, \a a2] to its value in a range [\a b1, \a b2]
+         *  \param[in] a1 Lower bound of input range.
+         *  \param[in] a2 Upper bound of input range.
+         *  \param[in] av Value in input range.
+         *  \param[in] b1 Lower bound of output range.
+         *  \param[in] b2 Upper bound of output range.
+         *  \return Value in output range.
+         */
+        double remap(double a1, double a2, double av, double b1, double b2);
     }  // namespace TF
 }  // namespace robowflex
 

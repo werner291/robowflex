@@ -12,6 +12,7 @@
 #include <robowflex_library/geometry.h>
 #include <robowflex_library/io.h>
 #include <robowflex_library/log.h>
+#include <robowflex_library/random.h>
 #include <robowflex_library/scene.h>
 
 #include <robowflex_dart/acm.h>
@@ -55,7 +56,9 @@ Structure::Structure(const std::string &name, const SceneConstPtr &scene) : Stru
         auto pair = addFreeFrame(joint, shape, root);
         setFreeJointTransform(object, pose);
 
-        setColor(pair.second, dart::Color::Blue(0.2));
+        auto color = robowflex::RNG::randomTurboColor();
+        color[3] = 0.8;
+        setColor(pair.second, color);
     }
 
     const auto &acm = scene->getACMConst();

@@ -107,6 +107,16 @@ namespace robowflex
          */
         Eigen::Vector3d gaussianVec(const Eigen::Vector3d &stddev);
 
+        /** \brief Generate a random color from the Turbo color palette.
+         *  \return A random color from the Turbo color palette.
+         */
+        Eigen::Vector4d randomTurboColor();
+
+        /** \brief Generate a random color from the Viridis color palette.
+         *  \return A random color from the Viridis color palette.
+         */
+        Eigen::Vector4d randomViridisColor();
+
         /** \brief Choose a random element between \a start and \a end.
          *  \param[in] start Start iterator.
          *  \param[in] end End iterator.

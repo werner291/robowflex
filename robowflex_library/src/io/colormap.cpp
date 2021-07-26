@@ -1,6 +1,7 @@
 /* Author: Zachary Kingston, Constantinos Chamzas */
 
 #include <cmath>
+#include <robowflex_library/tf.h>
 #include <robowflex_library/io/colormap.h>
 
 // From http://www.kennethmoreland.com/color-advice/ and
@@ -282,18 +283,6 @@ namespace
         {0.967741935483871, 0.9182680324484542, 0.9264392704144366, 0.11791750492313907},
         {1.0, 0.894058310302958, 0.9822535793047805, 0.0810687655704728}};
 
-    double remap(double a1, double a2, double av, double b1, double b2)
-    {
-        double dat = fabs(a2 - a1);
-        double dav = fabs(av - a1);
-
-        double dbt = fabs(b2 - b1);
-        double dbv = dbt * (dav / dat);
-
-        double bv = b1 + dbv;
-
-        return bv;
-    }
     void colormap(double s, double &r, double &g, double &b, unsigned int size, const Entry map[])
     {
         for (unsigned int i = 1; i < size; ++i)
@@ -303,9 +292,9 @@ namespace
 
             if (s < n.s)
             {
-                r = remap(p.s, n.s, s, p.r, n.r);
-                g = remap(p.s, n.s, s, p.g, n.g);
-                b = remap(p.s, n.s, s, p.b, n.b);
+                r = robowflex::TF::remap(p.s, n.s, s, p.r, n.r);
+                g = robowflex::TF::remap(p.s, n.s, s, p.g, n.g);
+                b = robowflex::TF::remap(p.s, n.s, s, p.b, n.b);
                 return;
             }
         }
