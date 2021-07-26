@@ -5,6 +5,7 @@
 
 #include <dart/dynamics/BoxShape.hpp>
 #include <dart/dynamics/CylinderShape.hpp>
+#include <dart/dynamics/ConeShape.hpp>
 #include <dart/dynamics/SphereShape.hpp>
 #include <dart/dynamics/MeshShape.hpp>
 #include <dart/dynamics/RevoluteJoint.hpp>
@@ -289,6 +290,13 @@ namespace robowflex
          *  \return The cylinder shape.
          */
         std::shared_ptr<dart::dynamics::CylinderShape> makeCylinder(double radius, double height);
+
+        /** \brief Create a cone.
+         *  \param[in] radius Radius of cone.
+         *  \param[in] height Height of the cone.
+         *  \return The cone shape.
+         */
+        std::shared_ptr<dart::dynamics::ConeShape> makeCone(double radius, double height);
 
         /** \brief Create a sphere.
          *  \param[in] radius Radius of sphere.

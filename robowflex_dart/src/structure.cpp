@@ -373,6 +373,8 @@ dart::dynamics::ShapePtr robowflex::darts::makeGeometry(const GeometryPtr &geome
             return makeSphere(dimensions[0]);
         case Geometry::ShapeType::CYLINDER:
             return makeCylinder(dimensions[0], dimensions[1]);
+        case Geometry::ShapeType::CONE:
+            return makeCone(dimensions[0], dimensions[1]);
         case Geometry::ShapeType::MESH:
             return makeMesh(geometry);
         default:
@@ -396,6 +398,11 @@ std::shared_ptr<dart::dynamics::BoxShape> robowflex::darts::makeBox(double x, do
 std::shared_ptr<dart::dynamics::CylinderShape> robowflex::darts::makeCylinder(double radius, double height)
 {
     return std::make_shared<dart::dynamics::CylinderShape>(radius, height);
+}
+
+std::shared_ptr<dart::dynamics::ConeShape> robowflex::darts::makeCone(double radius, double height)
+{
+    return std::make_shared<dart::dynamics::ConeShape>(radius, height);
 }
 
 std::shared_ptr<dart::dynamics::SphereShape> robowflex::darts::makeSphere(double radius)
