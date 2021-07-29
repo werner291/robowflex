@@ -1,0 +1,15 @@
+<map id="robowflex::Planner" name="robowflex::Planner">
+<area shape="rect" id="node1" title="An abstract interface to a motion planning algorithm." alt="" coords="5,169,148,195"/>
+<area shape="rect" id="node2" href="$classrobowflex_1_1darts_1_1DARTPlanner.html" title="Wrapper for easy access to DART planning tools via standard Robowflex interface." alt="" coords="204,26,423,53"/>
+<area shape="rect" id="node3" href="$classrobowflex_1_1OMPL_1_1OMPLInterfacePlanner.html" title="A planner that directly uses MoveIt!&#39;s OMPL planning interface." alt="" coords="196,77,431,119"/>
+<area shape="rect" id="node4" href="$classrobowflex_1_1PipelinePlanner.html" title="A motion planner that uses the MoveIt! planning pipeline to load a planner plugin." alt="" coords="216,143,411,170"/>
+<area shape="rect" id="node11" href="$classrobowflex_1_1PoolPlanner.html" title="A thread pool of planners P to service requests in a multi&#45;threaded environment simultaneously." alt="" coords="228,194,399,221"/>
+<area shape="rect" id="node12" href="$classrobowflex_1_1SimpleCartesianPlanner.html" title="A simple motion planner that uses interpolation of the end&#45;effector in Cartesian space to find a path..." alt="" coords="213,245,414,287"/>
+<area shape="rect" id="node13" href="$classrobowflex_1_1TrajOptPlanner.html" title="Robowflex Tesseract TrajOpt Planner." alt="" coords="219,311,408,338"/>
+<area shape="rect" id="node5" href="$classrobowflex_1_1OMPL_1_1OMPLPipelinePlanner.html" title="A robowflex::PipelinePlanner that uses the MoveIt! default OMPL planning pipeline." alt="" coords="479,71,707,112"/>
+<area shape="rect" id="node9" href="$classrobowflex_1_1opt_1_1CHOMPPipelinePlanner.html" title="A robowflex::PipelinePlanner that uses the MoveIt! CHOMP planning pipeline." alt="" coords="481,136,705,177"/>
+<area shape="rect" id="node10" href="$classrobowflex_1_1opt_1_1TrajOptPipelinePlanner.html" title="A robowflex::PipelinePlanner that uses the MoveIt! TrajOpt planning pipeline." alt="" coords="482,201,703,243"/>
+<area shape="rect" id="node6" href="$classrobowflex_1_1OMPL_1_1FetchOMPLPipelinePlanner.html" title="Convenience class for the default motion planning pipeline for Fetch." alt="" coords="755,5,1017,47"/>
+<area shape="rect" id="node7" href="$classrobowflex_1_1OMPL_1_1R2OMPLPipelinePlanner.html" title="Convenience class for the default motion planning pipeline for R2 (R2C6 full)." alt="" coords="763,71,1009,112"/>
+<area shape="rect" id="node8" href="$classrobowflex_1_1OMPL_1_1UR5OMPLPipelinePlanner.html" title="Convenience class for the default motion planning pipeline for UR5." alt="" coords="759,136,1013,177"/>
+</map>
