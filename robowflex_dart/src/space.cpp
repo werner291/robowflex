@@ -422,6 +422,20 @@ std::vector<std::string> StateSpace::getGroups() const
     return groups;
 }
 
+std::vector<std::string> StateSpace::getGroupDofNames(const std::string &group_name) const
+{
+    std::vector<std::string> dofs;
+
+    const auto &joints = group_joints_.find(group_name)->second;
+    for (const auto &joint : joints)
+    {
+        const auto &jdofs = joint->getDofs();
+        dofs.insert(dofs.end(), jdofs.begin(), jdofs.end());
+    }
+
+    return dofs;
+}
+
 Eigen::VectorXd StateSpace::getLowerBound() const
 {
     const auto &bounds = getBounds();

@@ -83,6 +83,11 @@ namespace robowflex
              */
             const std::vector<std::size_t> &getIndices() const;
 
+            /** \brief Get the names of the DoF in the skeleton for this joint.
+             *  \return Names of joint DoFs.
+             */
+            const std::vector<std::string> &getDofs() const;
+
             /** \brief Get the index of the skeleton for this joint in the world.
              *  \return Skeleton index.
              */
@@ -200,6 +205,7 @@ namespace robowflex
             ompl::RNG &rng_;     ///< Random number generator.
 
             std::vector<std::size_t> indices_;  ///< Indices this joint corresponds to.
+            std::vector<std::string> dofs_;     ///< Controlled DoF names.
 
             unsigned int skelIndex_;   ///< Index of skeleton.
             unsigned int jointIndex_;  ///< Index of joint.

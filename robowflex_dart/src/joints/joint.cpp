@@ -41,6 +41,7 @@ Joint::Joint(StateSpace *space,         //
 
         auto *dof = joint->getDof(i);
         indices_.emplace_back(dof->getIndexInSkeleton());
+        dofs_.emplace_back(dof->getName());
     }
 }
 
@@ -74,6 +75,11 @@ Eigen::Ref<const Eigen::VectorXd> Joint::getSpaceVarsConst(const Eigen::Ref<cons
 const std::vector<std::size_t> &Joint::getIndices() const
 {
     return indices_;
+}
+
+const std::vector<std::string> &Joint::getDofs() const
+{
+    return dofs_;
 }
 
 std::size_t Joint::getSkeletonIndex() const

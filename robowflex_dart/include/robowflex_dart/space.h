@@ -222,6 +222,11 @@ namespace robowflex
              */
             std::vector<std::string> getGroups() const;
 
+            /** \brief Get the names of each of the dof controlled by a group.
+             *  \return The names of all the controlled dof for a group.
+             */
+            std::vector<std::string> getGroupDofNames(const std::string &group_name) const;
+
             /** \} */
 
             /** \name OMPL StateSpace Methods
